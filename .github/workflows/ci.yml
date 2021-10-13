@@ -53,6 +53,13 @@ jobs:
       - name: Install test dependencies.
         run: sudo pip3 install ansible
 
+      - name: Debug
+        run: |
+          pwd
+          ls -la
+          ls -la ..
+          ls -la ./tests/
+
       - name: Set up the test environment.
         run: |
           cp tests/ansible.cfg ./ansible.cfg
