@@ -26,6 +26,7 @@ homebrew_installed_packages:
   - openssl
   - wget
   - carthage
+  - jenkins-lts
 
 homebrew_taps:
   - homebrew/core
