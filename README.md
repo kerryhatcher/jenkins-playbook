@@ -5,7 +5,8 @@ Setup Jenkins on a mac
 Closely based on https://github.com/geerlingguy/mac-dev-playbook
 
 
-[![CI][badge-gh-actions]][link-gh-actions]
+![CI](https://github.com/kerryhatcher/jenkins-playbook/actions/workflows/ci.yml/badge.svg?branch=main)
+
 
 ## Installation
 
