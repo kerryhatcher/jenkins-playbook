@@ -1,9 +1,9 @@
 ---
 homebrew_installed_packages:
   - openjdk
-  - android-sdk
-  - android-ndk
   - carthage
 
 homebrew_cask_apps:
   - firefox
+  - android-sdk
+  - android-ndk
