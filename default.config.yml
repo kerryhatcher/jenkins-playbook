@@ -2,6 +2,7 @@
 downloads: ~/.ansible-downloads/
 
 configure_osx: true
+configure_dotfiles: no
 
 configure_sudoers: false
 sudoers_custom_config: ''
