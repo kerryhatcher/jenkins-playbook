@@ -13,7 +13,7 @@ sudoers_custom_config: ''
 
 homebrew_installed_packages:
   # - ansible # Installed via Pip.
-  - adoptopenjdk/openjdk/adoptopenjdk11
+  - openjdk
   - autoconf
   - bash-completion
   - gifsicle

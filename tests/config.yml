@@ -1,15 +1,9 @@
 ---
 homebrew_installed_packages:
-  - autoconf
-  - bash-completion
-  - gettext
-  - sqlite
-  - ssh-copy-id
-  - cowsay
-  - readline
-  - pv
-  - wget
-  - wrk
+  - openjdk
+  - android-sdk
+  - android-ndk
+  - carthage
 
 homebrew_cask_apps:
   - firefox
