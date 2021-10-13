@@ -3,6 +3,12 @@ downloads: ~/.ansible-downloads/
 
 configure_osx: true
 
+configure_sudoers: false
+sudoers_custom_config: ''
+# Example:
+# sudoers_custom_config: |
+#   # Allow users in admin group to use sudo with no password.
+#   %admin ALL=(ALL) NOPASSWD: ALL
 
 homebrew_installed_packages:
   # - ansible # Installed via Pip.
