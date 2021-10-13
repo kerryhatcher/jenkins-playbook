@@ -1,0 +1,49 @@
+---
+downloads: ~/.ansible-downloads/
+
+configure_osx: true
+
+
+homebrew_installed_packages:
+  # - ansible # Installed via Pip.
+  - autoconf
+  - bash-completion
+  - doxygen
+  - gettext
+  - gifsicle
+  - git
+  - github/gh/gh
+  - go
+  - gpg
+  - httpie
+  - iperf
+  - libevent
+  - sqlite
+  - mcrypt
+  - nmap
+  - node
+  - nvm
+  - ssh-copy-id
+  - cowsay
+  - readline
+  - openssl
+  - pv
+  - wget
+  - wrk
+  - zsh-history-substring-search
+
+homebrew_taps:
+  - homebrew/core
+  - homebrew/cask
+
+homebrew_cask_appdir: /Applications
+homebrew_cask_apps:
+  - docker
+  - firefox
+  - google-chrome
+  - vagrant
+
+osx_script: "~/.osx --no-restart"
+
+
+post_provision_tasks: []
