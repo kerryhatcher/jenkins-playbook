@@ -16,6 +16,10 @@ lint: $(VENV)/bin/activate
 	$(VENV)/bin/yamllint .
 	$(VENV)/bin/ansible-lint
 
+test: $(VENV)/bin/activate
+	ansible-galaxy install -r requirements.yml
+	ansible-playbook main.yml --syntax-check
+
 clean:
 	rm -rf __pycache__
 	rm -rf $(VENV)
