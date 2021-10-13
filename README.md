@@ -10,6 +10,15 @@ Closely based on https://github.com/geerlingguy/mac-dev-playbook
 
 ## Installation
 
+### Auto 
+
+```
+curl -L https://raw.githubusercontent.com/kerryhatcher/jenkins-playbook/main/init.sh | bash
+```
+
+### Manual
+
+
   1. Ensure Apple's command line tools are installed (`xcode-select --install` to launch the installer).
   2. [Install Ansible](https://docs.ansible.com/ansible/latest/installation_guide/index.html):
 
