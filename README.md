@@ -4,6 +4,9 @@ Setup Jenkins on a mac
 
 Closely based on https://github.com/geerlingguy/mac-dev-playbook
 
+
+[![CI][badge-gh-actions]][link-gh-actions]
+
 ## Installation
 
   1. Ensure Apple's command line tools are installed (`xcode-select --install` to launch the installer).
