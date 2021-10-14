@@ -29,11 +29,13 @@ homebrew_installed_packages:
   - carthage
   - jenkins-lts
   - jcli
+  - jq
 
 homebrew_taps:
   - homebrew/core
   - homebrew/cask
   - jenkins-zh/jcli
+  - adoptopenjdk/openjdk
 
 homebrew_cask_appdir: /Applications
 homebrew_cask_apps:
@@ -43,6 +45,7 @@ homebrew_cask_apps:
   - firefox
   - google-chrome
   - vagrant
+  - adoptopenjdk11
 
 osx_script: "~/.osx --no-restart"
 
