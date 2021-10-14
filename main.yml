@@ -32,7 +32,7 @@
       tags: ['post']
 
     - name: Start Jenkins (Darwin)
-      command: /usr/local/bin/brew services start jenkins
+      command: /usr/local/bin/brew services start jenkins-lts
       when:
         - configure_jenkins
 
