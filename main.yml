@@ -76,4 +76,3 @@
       when:
         - initalAdmin is defined
         - configure_jenkins
-        - test
