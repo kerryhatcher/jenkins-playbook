@@ -41,6 +41,10 @@
       command: cat ~/.jenkins/secrets/initialAdminPassword
       register: initalAdmin_result
       changed_when: false
+      wait_for:
+        path: ~/.jenkins/secrets/initialAdminPassword
+        state: present
+        timeout: 300
       when:
         - initalAdmin is undefined
         - configure_jenkins
