@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep yml)
+
+if [[ "$STAGED_FILES" = "" ]]; then
+  exit 0
+fi
+
+PASS=true
+
+printf '\n Validating Project: \n'
+
+# Check for ansible-galaxy
+which ansible-galaxy &> /dev/null
+if [[ "$?" == 1 ]]; then
+  printf "\n Please install ansible-galaxy \n"
+  PASS=false
+  exit 1
+else
+  printf "ansible-galaxy found in path \n"
+fi
+
+# Check for ansible-playbook
+which ansible-playbook &> /dev/null
+if [[ "$?" == 1 ]]; then
+  printf "\n Please install ansible-playbook \n"
+  PASS=false
+  exit 1
+else
+  printf "ansible-playbook found in path \n"
+fi
+
+
+make lint 
+if [[ "$?" == 0 ]]; then
+printf "\t\033[32m make lint Passed\033[0m\n"
+else
+printf "\t\033[41m make lint Failed\033[0m\n"
+PASS=false
+fi
+
+make test
+if [[ "$?" == 0 ]]; then
+printf "\t\033[32m make test Passed\033[0m\n"
+else
+printf "\t\033[41m make test Failed\033[0m\n"
+PASS=false
+fi
+
+printf "\n Project validation completed!\n"
+
+if ! $PASS; then
+  printf "\033[41mCOMMIT FAILED:\033[0m Your commit contains files that should pass validation but do not. Please fix the validation errors and try again.\n"
+  exit 1
+else
+  printf "\033[42mCOMMIT SUCCEEDED\033[0m\n"
+fi
+
+exit $?

@@ -9,27 +9,27 @@
       include_vars: "{{ item }}"
       with_fileglob:
         - "{{ playbook_dir }}/config.yml"
-      tags: ['always']
+      tags: ["always"]
 
   roles:
     - role: elliotweiser.osx-command-line-tools
     - role: geerlingguy.mac.homebrew
-      tags: ['homebrew']
+      tags: ["homebrew"]
 
   tasks:
     - import_tasks: tasks/sudoers.yml
       when: configure_sudoers
-      tags: ['sudoers']
+      tags: ["sudoers"]
 
     - import_tasks: tasks/extra-packages.yml
-      tags: ['extra-packages']
+      tags: ["extra-packages"]
 
     - name: Run configured post-provision ansible task files.
       include_tasks: "{{ outer_item }}"
       loop_control:
         loop_var: outer_item
       with_fileglob: "{{ post_provision_tasks|default(omit) }}"
-      tags: ['post']
+      tags: ["post"]
 
     - name: Start Jenkins (Darwin)
       command: /usr/local/bin/brew services start jenkins-lts
@@ -51,7 +51,6 @@
         - initalAdmin is undefined
         - configure_jenkins
         - startJenkins_result is defined
-
 
     - name: Define initalAdmin variable.
       set_fact:
@@ -77,3 +76,4 @@
       when:
         - initalAdmin is defined
         - configure_jenkins
+        - test
