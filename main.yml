@@ -37,14 +37,16 @@
       when:
         - configure_jenkins
 
-    - name: Get Jenkins inital password
-      command: cat ~/.jenkins/secrets/initialAdminPassword
-      register: initalAdmin_result
-      changed_when: false
+    - name: Wait for file to exist
       wait_for:
         path: ~/.jenkins/secrets/initialAdminPassword
         state: present
         timeout: 300
+
+    - name: Get Jenkins inital password
+      command: cat ~/.jenkins/secrets/initialAdminPassword
+      register: initalAdmin_result
+      changed_when: false
       when:
         - initalAdmin is undefined
         - configure_jenkins
