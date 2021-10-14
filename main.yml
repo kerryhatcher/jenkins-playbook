@@ -36,23 +36,6 @@
       when:
         - configure_jenkins
 
-    - name: Creating a file with content
-      copy:
-        dest: "~/.jenkins-cli.yaml"
-        content: |
-          current: localServer
-          jenkins_servers:
-          - name: localServer
-            url: http://localhost:8080/jenkins
-            username: admin
-            token: "{{ ansible_facts['initalAdmin'] }}"
-            insecureSkipVerify: true
-          mirrors:
-          - name: default
-            url: http://mirrors.jenkins.io/
-      when:
-        - configure_jenkins
-
     - name: Get Jenkins inital password
       command: cat ~/.jenkins/secrets/initialAdminPassword
       register: initalAdmin_result
@@ -66,4 +49,21 @@
         initalAdmin: "{{ initalAdmin_result.stdout }}"
       when:
         - initalAdmin is undefined
+        - configure_jenkins
+
+    - name: Creating a file with content
+      copy:
+        dest: "~/.jenkins-cli.yaml"
+        content: |
+          current: localServer
+          jenkins_servers:
+          - name: localServer
+            url: http://localhost:8080/jenkins
+            username: admin
+            token: "{{ initalAdmin_result.stdout }}"
+            insecureSkipVerify: true
+          mirrors:
+          - name: default
+            url: http://mirrors.jenkins.io/
+      when:
         - configure_jenkins
