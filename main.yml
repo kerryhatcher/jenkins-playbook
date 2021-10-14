@@ -52,7 +52,6 @@
             url: http://mirrors.jenkins.io/
       when:
         - configure_jenkins
-        - ansible_facts['initalAdmin'] == "Debian"
 
     - name: Get Jenkins inital password
       command: cat ~/.jenkins/secrets/initialAdminPassword
