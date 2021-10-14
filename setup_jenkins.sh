@@ -5,7 +5,7 @@ set -e
 
 wget http://localhost/jnlpJars/jenkins-cli.jar
 
-curl -o APItoken.json -F http://127.0.0.1:8080/me/descriptorByName/jenkins.security.ApiTokenProperty/generateNewToken
+curl -o APItoken.json -F http://127.0.0.1:8080/me/descriptorByName/jenkins.security.ApiTokenProperty/generateNewToken --data 'newTokenName=bootstrap' --user admin:$(cat ~/.jenkins/secrets/initialAdminPassword)
 
 
 
