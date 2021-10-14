@@ -30,3 +30,46 @@
         loop_var: outer_item
       with_fileglob: "{{ post_provision_tasks|default(omit) }}"
       tags: ['post']
+
+###########  Custom stuff ##########
+
+
+    - name: Start Jenkins (Darwin)
+      command: /usr/local/bin/brew services start jenkins
+      when: 
+        - configure_jenkins
+
+
+    - name: Creating a file with content
+      copy:
+        dest: "~/.jenkins-cli.yaml"
+        content: |
+          current: localServer
+          jenkins_servers:
+          - name: localServer
+            url: http://localhost:8080/jenkins
+            username: admin
+            token: "{{ ansible_facts['initalAdmin'] }}"
+            insecureSkipVerify: true
+          mirrors:
+          - name: default
+            url: http://mirrors.jenkins.io/
+      when: 
+        - configure_jenkins
+        - ansible_facts['initalAdmin'] == "Debian"
+
+          
+    - name: Get Jenkins inital password
+      command: cat ~/.jenkins/secrets/initialAdminPassword
+      register: initalAdmin_result
+      changed_when: false
+      when: 
+        - initalAdmin is undefined
+        - configure_jenkins
+
+    - name: Define initalAdmin variable.
+      set_fact:
+        initalAdmin: "{{ initalAdmin_result.stdout }}"
+      when: 
+        - initalAdmin is undefined
+        - configure_jenkins

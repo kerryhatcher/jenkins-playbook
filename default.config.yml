@@ -3,6 +3,7 @@ downloads: ~/.ansible-downloads/
 
 configure_osx: true
 configure_dotfiles: false
+configure_jenkins: true
 
 configure_sudoers: false
 sudoers_custom_config: ''
@@ -27,10 +28,12 @@ homebrew_installed_packages:
   - wget
   - carthage
   - jenkins-lts
+  - jcli
 
 homebrew_taps:
   - homebrew/core
   - homebrew/cask
+  - jenkins-zh/jcli
 
 homebrew_cask_appdir: /Applications
 homebrew_cask_apps:

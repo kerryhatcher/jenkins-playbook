@@ -2,8 +2,12 @@
 homebrew_installed_packages:
   - openjdk
   - carthage
-
+  - jenkins-lts
+  - jcli
+  
 homebrew_cask_apps:
   - firefox
   - android-sdk
   - android-ndk
+
+configure_jenkins: true
