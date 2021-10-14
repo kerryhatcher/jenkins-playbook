@@ -3,14 +3,18 @@ set -e
 
 #jcli center watch --util-install-complete
 
-wget http://localhost/jnlpJars/jenkins-cli.jar
+export jenkins_URL="localhost:8080"
 
-curl -o APItoken.json -F http://127.0.0.1:8080/me/descriptorByName/jenkins.security.ApiTokenProperty/generateNewToken --data 'newTokenName=bootstrap' --user admin:$(cat ~/.jenkins/secrets/initialAdminPassword)
+wget http://$jenkins_URL/jnlpJars/jenkins-cli.jar
 
 
 
-java -jar jenkins-cli.jar -s http://127.0.0.1:8080/ -auth admin:$(cat ~/.jenkins/secrets/initialAdminPassword) -webSocket help
-java -jar jenkins-cli.jar -s http://127.0.0.1:8080/ -auth admin:$(cat ~/.jenkins/secrets/initialAdminPassword) -webSocket install-plugin configuration-as-code configuration-as-code-secret-ssm credentials aws-secrets-manager-credentials-provider mailer cloudbees-folder antisamy-markup-formatter build-timeout credentials-binding timestamper ws-cleanup ant gradle nodejs htmlpublisher workflow-aggregator github-branch-source pipeline-github-lib pipeline-stage-view copyartifact parameterized-trigger conditional-buildstep bitbucket git github ssh-slaves matrix-auth pam-auth ldap role-strategy active-directory authorize-project email-ext 
+curl -X POST -o APItoken.json -F http://$jenkins_URL/me/descriptorByName/jenkins.security.ApiTokenProperty/generateNewToken --data 'newTokenName=bootstrap' --user admin:$(cat ~/.jenkins/secrets/initialAdminPassword) -H "Jenkins-Crumb: $(curl -v -X GET http://$jenkins_URL/crumbIssuer/api/json --user admin:$(cat ~/.jenkins/secrets/initialAdminPassword) | jq '.crumb')"
+
+
+
+java -jar jenkins-cli.jar -s http:/$jenkins_URL/ -auth admin:$(cat ~/.jenkins/secrets/initialAdminPassword) -webSocket help
+java -jar jenkins-cli.jar -s http:/$jenkins_URL/ -auth admin:$(cat ~/.jenkins/secrets/initialAdminPassword) -webSocket install-plugin configuration-as-code configuration-as-code-secret-ssm credentials aws-secrets-manager-credentials-provider mailer cloudbees-folder antisamy-markup-formatter build-timeout credentials-binding timestamper ws-cleanup ant gradle nodejs htmlpublisher workflow-aggregator github-branch-source pipeline-github-lib pipeline-stage-view copyartifact parameterized-trigger conditional-buildstep bitbucket git github ssh-slaves matrix-auth pam-auth ldap role-strategy active-directory authorize-project email-ext 
 
 jcli plugin install configuration-as-code configuration-as-code-secret-ssm credentials aws-secrets-manager-credentials-provider
 jcli center watch
