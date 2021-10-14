@@ -3,6 +3,11 @@ set -e
 
 #jcli center watch --util-install-complete
 
+wget http://localhost/jnlpJars/jenkins-cli.jar
+
+java -jar jenkins-cli.jar -s http://127.0.0.1:8080/ -auth admin:$(cat ~/.jenkins/secrets/initialAdminPassword) -webSocket help
+java -jar jenkins-cli.jar -s http://127.0.0.1:8080/ -auth admin:$(cat ~/.jenkins/secrets/initialAdminPassword) -webSocket install-plugin configuration-as-code configuration-as-code-secret-ssm credentials aws-secrets-manager-credentials-provider mailer cloudbees-folder antisamy-markup-formatter build-timeout credentials-binding timestamper ws-cleanup ant gradle nodejs htmlpublisher workflow-aggregator github-branch-source pipeline-github-lib pipeline-stage-view copyartifact parameterized-trigger conditional-buildstep bitbucket git github ssh-slaves matrix-auth pam-auth ldap role-strategy active-directory authorize-project email-ext 
+
 jcli plugin install configuration-as-code configuration-as-code-secret-ssm credentials aws-secrets-manager-credentials-provider
 jcli center watch
 jcli plugin install mailer cloudbees-folder antisamy-markup-formatter build-timeout credentials-binding timestamper ws-cleanup ant
