@@ -31,14 +31,10 @@
       with_fileglob: "{{ post_provision_tasks|default(omit) }}"
       tags: ['post']
 
-###########  Custom stuff ##########
-
-
     - name: Start Jenkins (Darwin)
       command: /usr/local/bin/brew services start jenkins
-      when: 
+      when:
         - configure_jenkins
-
 
     - name: Creating a file with content
       copy:
@@ -54,22 +50,21 @@
           mirrors:
           - name: default
             url: http://mirrors.jenkins.io/
-      when: 
+      when:
         - configure_jenkins
         - ansible_facts['initalAdmin'] == "Debian"
 
-          
     - name: Get Jenkins inital password
       command: cat ~/.jenkins/secrets/initialAdminPassword
       register: initalAdmin_result
       changed_when: false
-      when: 
+      when:
         - initalAdmin is undefined
         - configure_jenkins
 
     - name: Define initalAdmin variable.
       set_fact:
         initalAdmin: "{{ initalAdmin_result.stdout }}"
-      when: 
+      when:
         - initalAdmin is undefined
         - configure_jenkins
