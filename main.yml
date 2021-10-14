@@ -33,6 +33,7 @@
 
     - name: Start Jenkins (Darwin)
       command: /usr/local/bin/brew services start jenkins-lts
+      register: startJenkins_result
       when:
         - configure_jenkins
 
@@ -43,6 +44,8 @@
       when:
         - initalAdmin is undefined
         - configure_jenkins
+        - startJenkins_result is defined
+
 
     - name: Define initalAdmin variable.
       set_fact:
@@ -66,4 +69,5 @@
           - name: default
             url: http://mirrors.jenkins.io/
       when:
+        - initalAdmin is defined
         - configure_jenkins
