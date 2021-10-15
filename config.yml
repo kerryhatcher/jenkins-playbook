@@ -12,3 +12,5 @@ jenkins_plugins:
   - name: active-directory
   - name: authorize-project
   - name: email-ext
+  - name: job-dsl
+  - name: Credentials
