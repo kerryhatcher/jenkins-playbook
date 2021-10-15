@@ -76,12 +76,6 @@ pip_packages: []
 #   version: "0.16.3" # default: N/A
 jenkins_plugins:
   - name: configuration-as-code
-  - name: matrix-auth
-  - name: pam-auth
-  - name: ldap
-  - name: role-strategy
-  - name: active-directory
-  - name: authorize-project
-  - name: email-ext
+
 
 post_provision_tasks: []

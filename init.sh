@@ -124,21 +124,21 @@ else
 
 fi
 
-if ask "Install Ruby/RVM?"; then
-    echo "Yes"
-    curl -sSL https://get.rvm.io | bash -s stable
-    source ~/.rvm/scripts/rvm
-    rvm install 2.6.3
-    gem install bundler -v 2.0.2
+# if ask "Install Ruby/RVM?"; then
+#     echo "Yes"
+#     curl -sSL https://get.rvm.io | bash -s stable
+#     source ~/.rvm/scripts/rvm
+#     rvm install 2.6.3
+#     gem install bundler -v 2.0.2
 
-else
-    echo "No"
+# else
+#     echo "No"
 
-fi
+# fi
 
 if ask "Install all supported Xcode and CLI tools?"; then
     echo "Yes"
-    sudo gem install xcode-install
+    #sudo gem install xcode-install
     xcversion install 11.1
     xcversion install 11.3.1
     xcversion install 11.4.1

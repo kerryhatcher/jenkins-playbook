@@ -1,0 +1,13 @@
+jenkins_jcasc_s3_bucket: jenkins-customer-prod
+jcli_plugins: 
+  - name: casc
+  
+jenkins_plugins:
+  - name: configuration-as-code
+  - name: matrix-auth
+  - name: pam-auth
+  - name: ldap
+  - name: role-strategy
+  - name: active-directory
+  - name: authorize-project
+  - name: email-ext

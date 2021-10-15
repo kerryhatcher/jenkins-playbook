@@ -115,6 +115,17 @@
   retries: 20
   delay: 10
 
+- name: Fetch CLI Plugins
+  command: "jcli config plugin fetch"
+  args:
+    creates: "~/jcli-plugins/plugins-repo/README.md"
+
+- name: install CLI Plugins
+  command: "jcli config plugin install {{ item.name }}"
+  loop: "{{ jcli_plugins }}"
+  args:
+    creates: "~/jcli-plugins/plugins-repo/{{ item.name }}"
+
 - name: install Plugins
   command: "jcli plugin install {{ item.name }}"
   loop: "{{ jenkins_plugins }}"
@@ -126,6 +137,14 @@
   register: cli_result_2
   changed_when:
     - '"Error:" in cli_result_2.stderr'
+
+- name: GET JCasC file
+  amazon.aws.aws_s3:
+    bucket: "{{ jenkins_jcasc_s3_bucket }}"
+    object: prod/jenkins.yaml
+    dest: "{{ jenkins_home_path }}/jenkins.yaml"
+    mode: get
+    overwrite: different
 
 - name: restart
   command: "jcli restart -b"
