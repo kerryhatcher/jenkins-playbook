@@ -81,11 +81,17 @@ if ask "Run playbook?"; then
 
     cd
 
-    rm -rf jenkins-playbook
+    #rm -rf jenkins-playbook
 
-    git clone https://github.com/kerryhatcher/jenkins-playbook.git
-
-    cd jenkins-playbook
+    if [ -d "jenkins-playbook" ] 
+    then
+        echo "jenkins-playbook" 
+        cd jenkins-playbook
+        git pull
+    else
+        echo git clone https://github.com/kerryhatcher/jenkins-playbook.git
+        cd jenkins-playbook
+    fi
 
     export PATH="$HOME/Library/Python/3.8/bin:/opt/homebrew/bin:$PATH"
 
