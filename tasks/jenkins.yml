@@ -39,7 +39,7 @@
   register: jenk_crumb
   when:
     - configure_jenkins
-  until: _result.status == 200
+  until: result.status == 200
   retries: 50
   delay: 20
 
@@ -60,7 +60,7 @@
   register: jenk_token
   when:
     - configure_jenkins
-  until: _result.status == 200
+  until: result.status == 200
   retries: 50
   delay: 10
 
@@ -110,7 +110,7 @@
     follow_redirects: none
     method: GET
   register: _result
-  until: _result.status == 200
+  until: result.status == 200
   retries: 100
   delay: 10
 
