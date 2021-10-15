@@ -11,3 +11,4 @@ homebrew_cask_apps:
   - android-ndk
 
 configure_jenkins: true
+jenkins_plugins: []

@@ -85,10 +85,57 @@ ansible-galaxy install -r requirements.yml
 
 ansible-playbook main.yml --ask-become-pass
 
-#brew services start jenkins-lts
 
-#- java -jar /var/cache/jenkins/war/WEB-INF/jenkins-cli.jar -s http://127.0.0.1:8080/ -auth admin:$(cat /var/lib/jenkins/secrets/initialAdminPassword) install-plugin configuration-as-code configuration-as-code-secret-ssm credentials aws-secrets-manager-credentials-provider mailer cloudbees-folder antisamy-markup-formatter build-timeout credentials-binding timestamper ws-cleanup ant gradle nodejs htmlpublisher workflow-aggregator github-branch-source pipeline-github-lib pipeline-stage-view copyartifact parameterized-trigger conditional-buildstep bitbucket git github ssh-slaves matrix-auth pam-auth ldap role-strategy active-directory authorize-project email-ext 
 
-#$(cat /var/lib/jenkins/secrets/initialAdminPassword)
 
-#~/.jenkins/secrets/initialAdminPassword
+
+if ask "Install Install Android SDK components?"; then
+    echo "Yes"
+    sdkmanager --update
+    sdkmanager "platform-tools" "platforms;android-28"
+    echo "export ANDROID_HOME=/usr/local/share/android-sdk" >> ~/.bash_profile
+    echo "export ANDROID_NDK_HOME=/usr/local/share/android-ndk" >> ~/.bash_profile
+    echo "export LC_ALL=en_US.UTF-8" >> ~/.bash_profile
+    echo "export LANG=en_US.UTF-8" >> ~/.bash_profile
+    source ~/.bash_profile
+
+else
+    echo "No"
+
+fi
+
+if ask "Disable Gradle Daemon?"; then
+    echo "Yes"
+    echo "org.gradle.daemon=false" ~/.gradle/gradle.properties
+
+else
+    echo "No"
+
+fi
+
+if ask "Install Ruby/RVM?"; then
+    echo "Yes"
+    curl -sSL https://get.rvm.io | bash -s stable
+    source ~/.rvm/scripts/rvm
+    rvm install 2.6.3
+    gem install bundler -v 2.0.2
+
+else
+    echo "No"
+
+fi
+
+if ask "Install all supported Xcode and CLI tools?"; then
+    echo "Yes"
+    sudo gem install xcode-install
+    xcversion install 11.1
+    xcversion install 11.3.1
+    xcversion install 11.4.1
+    xcversion install 12.4
+    xcversion install 12.5
+    sudo xcode-select --switch /Library/Developer/CommandLineTools
+    sudo xcodebuild -license accept
+else
+    echo "No"
+
+fi

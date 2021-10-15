@@ -7,12 +7,4 @@ configure_jenkins_linux: true
 
 jenkins_home_path: /home/kwhatcher/Projects/kerry/jenkins-playbook/tests/jenkins_home
 
-jenkins_plugins:
-  - name: configuration-as-code
-  - name: matrix-auth
-  - name: pam-auth
-  - name: ldap
-  - name: role-strategy
-  - name: active-directory
-  - name: authorize-project
-  - name: email-ext
+jenkins_plugins: []
