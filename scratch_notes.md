@@ -17,7 +17,7 @@ Old token stuff:
     - configure_jenkins
 
 - name: Setup API token
-  command: "curl -b cookie.txt -c cookie.txt -X POST -o APItoken.json http://$jenkins_URL/me/descriptorByName/jenkins.security.ApiTokenProperty/generateNewToken --data 'newTokenName=bootstrap' --user admin:{{ initalAdmin_result.stdout }} -H 'Jenkins-Crumb: {{ jenk_crumb.stdout }}'"
+  command: "curl -b cookie.txt -c cookie.txt -X POST -o APItoken.json http://$jenkins_URL/me/descriptorByName/jenkins.security.ApiTokenProperty/generateNewToken --data 'newTokenName=bootstrap' --user admin:{{ initalAdmin_result.stdout }} -H Jenkins-Crumb: {{ jenk_crumb.stdout }}'"
   register: jenk_token
   when:
     - configure_jenkins

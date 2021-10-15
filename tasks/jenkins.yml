@@ -48,12 +48,13 @@
     url: http://localhost:8080/me/descriptorByName/jenkins.security.ApiTokenProperty/generateNewToken
     method: POST
     return_content: true
+    force_basic_auth: true
     user: "admin"
     password: "{{ initalAdmin_result.stdout }}"
-    force_basic_auth: true
     status_code: 200
     headers:
       Cookie: "{{ jenk_crumb.cookies_string }}"
+      Jenkins-Crumb: jenk_crumbjenk_token.json.crumb
     body_format: form-urlencoded
     body:
       - [newTokenName, bootstrap]
