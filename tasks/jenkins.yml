@@ -9,7 +9,7 @@
   wait_for:
     path: "{{ jenkins_home_path }}/secrets/initialAdminPassword"
     state: present
-    timeout: 5
+    timeout: 60
 
 - name: Get Jenkins inital password
   command: cat {{ jenkins_home_path }}/secrets/initialAdminPassword
