@@ -39,7 +39,7 @@
   register: jenk_crumb
   when:
     - configure_jenkins
-  until: result.status == 200
+  until: jenk_crumb.status == 200
   retries: 50
   delay: 20
 
@@ -96,21 +96,23 @@
 
 - name: Wait for install to finish
   command: "jcli center watch --util-install-complete"
+  register: cli_result_2
   changed_when:
-    - '"Error:" in result.stderr'
+    - '"Error:" in cli_result_2.stderr'
 
 - name: restart
   command: "jcli restart -b"
+  register: cli_result_1
   changed_when:
-    - '"Error:" in result.stderr'
+    - '"Error:" in cli_result_1.stderr'
 
 - name: Pause play until a jenkins is reachable on localhost
   uri:
     url: "http://localhost:8080"
     follow_redirects: none
     method: GET
-  register: _result
-  until: result.status == 200
+  register: wait_result_1
+  until: wait_result_1.status == 200
   retries: 100
   delay: 10
 
