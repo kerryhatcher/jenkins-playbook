@@ -72,32 +72,39 @@ fi
 
 
 
+if ask "Run playbook?"; then
+    echo "Yes"
+    
+    curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+    
+    python3 get-pip.py --user
 
+    cd
 
-curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-python3 get-pip.py --user
+    rm -rf jenkins-playbook
 
-cd
+    git clone https://github.com/kerryhatcher/jenkins-playbook.git
 
-rm -rf jenkins-playbook
+    cd jenkins-playbook
 
-git clone https://github.com/kerryhatcher/jenkins-playbook.git
+    export PATH="$HOME/Library/Python/3.8/bin:/opt/homebrew/bin:$PATH"
 
-cd jenkins-playbook
+    make setup
 
-export PATH="$HOME/Library/Python/3.8/bin:/opt/homebrew/bin:$PATH"
+    source venv/bin/activate
 
-#  python -m pip install --user ansible
-sudo pip3 install --upgrade pip
+    sudo pip3 install --upgrade pip
 
-pip3 install -r requirements.txt
+    pip3 install -r requirements.txt
 
-ansible-galaxy install -r requirements.yml
+    ansible-galaxy install -r requirements.yml
 
-ansible-playbook main.yml --ask-become-pass
+    ansible-playbook main.yml --ask-become-pass
 
+else
+    echo "No"
 
-
+fi
 
 
 if ask "Install Install Android SDK components?"; then
