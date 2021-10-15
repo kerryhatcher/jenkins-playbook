@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+
+
 ask() {
     local prompt default reply
 
@@ -38,6 +40,15 @@ ask() {
 }
 
 
+
+if ask "Disable Gatekeeper?"; then
+    echo "Yes"
+    sudo spctl --master-disable
+
+else
+    echo "No"
+
+fi
 
 
 
