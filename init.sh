@@ -99,7 +99,13 @@ if ask "Run playbook?"; then
 
     ansible-galaxy install -r requirements.yml
 
-    ansible-playbook main.yml
+   
+
+    if [[ -z "${ansible_become_password}" ]]; then
+        ansible-playbook main.yml
+    else
+        ansible-playbook main.yml --ask-become-pass
+    fi
 
 else
     echo "No"
