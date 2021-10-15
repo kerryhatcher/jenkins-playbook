@@ -3,16 +3,16 @@
   command: /usr/local/bin/brew services start jenkins-lts
   register: startJenkins_result
   when:
-    - configure_jenkins
+    - configure_jenkins_mac
 
 - name: Wait for file to exist
   wait_for:
-    path: ~/.jenkins/secrets/initialAdminPassword
+    path: "{{ jenkins_home_path }}/secrets/initialAdminPassword"
     state: present
-    timeout: 300
+    timeout: 5
 
 - name: Get Jenkins inital password
-  command: cat ~/.jenkins/secrets/initialAdminPassword
+  command: cat {{ jenkins_home_path }}/secrets/initialAdminPassword
   register: initalAdmin_result
   changed_when: false
   when:
@@ -40,8 +40,17 @@
   when:
     - configure_jenkins
   until: jenk_crumb.status == 200
-  retries: 15
-  delay: 10
+  retries: 5
+  delay: 20
+
+- name: Debug get crumbs and session info for API calls
+  ansible.builtin.debug:
+    var: jenk_crumb.json.crumb
+
+- name: Debug get crumbs and session info for API calls
+  ansible.builtin.debug:
+    var: jenk_crumb
+
 
 - name: Get user API token
   uri:
@@ -54,7 +63,7 @@
     status_code: 200
     headers:
       Cookie: "{{ jenk_crumb.cookies_string }}"
-      Jenkins-Crumb: jenk_crumb.json.crumb
+      Jenkins-Crumb: "{{ jenk_crumb.json.crumb }}"
     body_format: form-urlencoded
     body:
       - [newTokenName, bootstrap]
@@ -62,7 +71,7 @@
   when:
     - configure_jenkins
   until: jenk_token.status == 200
-  retries: 15
+  retries: 3
   delay: 10
 
 - name: Creating a file with content
@@ -72,7 +81,7 @@
       current: localServer
       jenkins_servers:
       - name: localServer
-        url: http://localhost:8080/jenkins
+        url: http://localhost:8080
         username: admin
         token: "{{ jenk_token.json.data.tokenValue }}"
         insecureSkipVerify: true
@@ -93,7 +102,7 @@
   command: "jcli plugin install {{ item.name }}"
   loop: "{{ jenkins_plugins }}"
   args:
-    creates: "~/.jenkins/plugins/{{ item.name }}.jpi"
+    creates: "{{ jenkins_home_path }}/plugins/{{ item.name }}.jpi"
 
 - name: Wait for install to finish
   command: "jcli center watch --util-install-complete"
@@ -112,6 +121,13 @@
     url: "http://localhost:8080"
     follow_redirects: none
     method: GET
+    force_basic_auth: true
+    user: "admin"
+    password: "{{ initalAdmin_result.stdout }}"
+    status_code: 200
+    headers:
+      Cookie: "{{ jenk_crumb.cookies_string }}"
+      Jenkins-Crumb: "{{ jenk_crumb.json.crumb }}"
   register: wait_result_1
   until: wait_result_1.status == 200
   retries: 100
@@ -119,5 +135,6 @@
 
 - name: Check on update status
   command: "jcli center watch --util-install-complete"
+  register: cli_result_3
   changed_when:
-    - '"Error:" in result.stderr'
+    - '"Error:" in cli_result_3.stderr'

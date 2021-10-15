@@ -3,10 +3,10 @@
 *.retry
 roles*
 
+tests/jenkins_home
 
-
-
-
+cookie.txt
+APItoken.json
 
 
 
