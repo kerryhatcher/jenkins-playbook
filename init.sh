@@ -1,6 +1,68 @@
 #!/bin/bash
 set -e
 
+ask() {
+    local prompt default reply
+
+    if [[ ${2:-} = 'Y' ]]; then
+        prompt='Y/n'
+        default='Y'
+    elif [[ ${2:-} = 'N' ]]; then
+        prompt='y/N'
+        default='N'
+    else
+        prompt='y/n'
+        default=''
+    fi
+
+    while true; do
+
+        # Ask the question (not using "read -p" as it uses stderr not stdout)
+        echo -n "$1 [$prompt] "
+
+        # Read the answer (use /dev/tty in case stdin is redirected from somewhere else)
+        read -r reply </dev/tty
+
+        # Default?
+        if [[ -z $reply ]]; then
+            reply=$default
+        fi
+
+        # Check if the reply is valid
+        case "$reply" in
+            Y*|y*) return 0 ;;
+            N*|n*) return 1 ;;
+        esac
+
+    done
+}
+
+
+
+
+
+if ask "Install xcode?"; then
+    echo "Yes"
+    xcode-select --install
+
+    if ask "Xcode finshed installing?"; then
+    echo "Yes"
+    else
+        echo "No"
+        exit 1
+    fi
+else
+    echo "No"
+
+fi
+
+
+
+
+
+
+
+
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python3 get-pip.py --user
 

@@ -13,7 +13,7 @@ Closely based on https://github.com/geerlingguy/mac-dev-playbook
 ### Auto 
 
 ```
-xcode-select --install
+
 curl -L https://raw.githubusercontent.com/kerryhatcher/jenkins-playbook/main/init.sh | bash
 curl -L https://raw.githubusercontent.com/kerryhatcher/jenkins-playbook/main/setup_jenkins.sh | bash
 ```
