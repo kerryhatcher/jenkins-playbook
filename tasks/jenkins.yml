@@ -41,7 +41,7 @@
     - configure_jenkins
   until: _result.status == 200
   retries: 50
-  delay: 10
+  delay: 20
 
 - name: Get user API token
   uri:
