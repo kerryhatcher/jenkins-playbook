@@ -75,9 +75,9 @@ fi
 if ask "Run playbook?"; then
     echo "Yes"
     
-    curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-    
-    python3 get-pip.py --user
+    #curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+
+    #python3 get-pip.py --user
 
     cd
 
@@ -99,7 +99,7 @@ if ask "Run playbook?"; then
 
     ansible-galaxy install -r requirements.yml
 
-    ansible-playbook main.yml --ask-become-pass
+    ansible-playbook main.yml
 
 else
     echo "No"
