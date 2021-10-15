@@ -40,7 +40,7 @@
   when:
     - configure_jenkins
   until: jenk_crumb.status == 200
-  retries: 25
+  retries: 15
   delay: 10
 
 - name: Get user API token
@@ -62,7 +62,7 @@
   when:
     - configure_jenkins
   until: jenk_token.status == 200
-  retries: 25
+  retries: 15
   delay: 10
 
 - name: Creating a file with content
