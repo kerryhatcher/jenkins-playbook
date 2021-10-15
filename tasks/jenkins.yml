@@ -54,7 +54,7 @@
     status_code: 200
     headers:
       Cookie: "{{ jenk_crumb.cookies_string }}"
-      Jenkins-Crumb: jenk_crumbjenk_token.json.crumb
+      Jenkins-Crumb: jenk_crumb.json.crumb
     body_format: form-urlencoded
     body:
       - [newTokenName, bootstrap]
