@@ -31,48 +31,6 @@
       with_fileglob: "{{ post_provision_tasks|default(omit) }}"
       tags: ["post"]
 
-    - name: Start Jenkins (Darwin)
-      command: /usr/local/bin/brew services start jenkins-lts
-      register: startJenkins_result
-      when:
-        - configure_jenkins
-
-    - name: Wait for file to exist
-      wait_for:
-        path: ~/.jenkins/secrets/initialAdminPassword
-        state: present
-        timeout: 300
-
-    - name: Get Jenkins inital password
-      command: cat ~/.jenkins/secrets/initialAdminPassword
-      register: initalAdmin_result
-      changed_when: false
-      when:
-        - initalAdmin is undefined
-        - configure_jenkins
-        - startJenkins_result is defined
-
-    - name: Define initalAdmin variable.
-      set_fact:
-        initalAdmin: "{{ initalAdmin_result.stdout }}"
-      when:
-        - initalAdmin is undefined
-        - configure_jenkins
-
-    - name: Creating a file with content
-      copy:
-        dest: "~/.jenkins-cli.yaml"
-        content: |
-          current: localServer
-          jenkins_servers:
-          - name: localServer
-            url: http://localhost:8080/jenkins
-            username: admin
-            token: "{{ initalAdmin_result.stdout }}"
-            insecureSkipVerify: true
-          mirrors:
-          - name: default
-            url: http://mirrors.jenkins.io/
-      when:
-        - initalAdmin is defined
-        - configure_jenkins
+    - import_tasks: tasks/jenkins.yml
+      when: configure_jenkins
+      tags: ["jenkins"]

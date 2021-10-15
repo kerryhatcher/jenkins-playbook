@@ -7,11 +7,11 @@ export jenkins_URL="localhost:8080"
 
 wget http://$jenkins_URL/jnlpJars/jenkins-cli.jar
 
+export crumb=$(curl -b cookie.txt -c cookie.txt -v -X GET http://$jenkins_URL/crumbIssuer/api/json --user admin:$(cat ~/.jenkins/secrets/initialAdminPassword) | jq '.crumb')
 
+curl -b cookie.txt -c cookie.txt -X POST -o APItoken.json http://$jenkins_URL/me/descriptorByName/jenkins.security.ApiTokenProperty/generateNewToken --data 'newTokenName=bootstrap' --user admin:$(cat ~/.jenkins/secrets/initialAdminPassword) -H "Jenkins-Crumb: $crumb" 
 
-curl -X POST -o APItoken.json -F http://$jenkins_URL/me/descriptorByName/jenkins.security.ApiTokenProperty/generateNewToken --data 'newTokenName=bootstrap' --user admin:$(cat ~/.jenkins/secrets/initialAdminPassword) -H "Jenkins-Crumb: $(curl -v -X GET http://$jenkins_URL/crumbIssuer/api/json --user admin:$(cat ~/.jenkins/secrets/initialAdminPassword) | jq '.crumb')"
-
-
+export jenk_token=$(at APItoken.json | jq -r '.data.tokenValue')
 
 java -jar jenkins-cli.jar -s http:/$jenkins_URL/ -auth admin:$(cat ~/.jenkins/secrets/initialAdminPassword) -webSocket help
 java -jar jenkins-cli.jar -s http:/$jenkins_URL/ -auth admin:$(cat ~/.jenkins/secrets/initialAdminPassword) -webSocket install-plugin configuration-as-code configuration-as-code-secret-ssm credentials aws-secrets-manager-credentials-provider mailer cloudbees-folder antisamy-markup-formatter build-timeout credentials-binding timestamper ws-cleanup ant gradle nodejs htmlpublisher workflow-aggregator github-branch-source pipeline-github-lib pipeline-stage-view copyartifact parameterized-trigger conditional-buildstep bitbucket git github ssh-slaves matrix-auth pam-auth ldap role-strategy active-directory authorize-project email-ext 

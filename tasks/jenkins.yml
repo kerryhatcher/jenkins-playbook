@@ -1,0 +1,96 @@
+---
+- name: Start Jenkins (Darwin)
+  command: /usr/local/bin/brew services start jenkins-lts
+  register: startJenkins_result
+  when:
+    - configure_jenkins
+
+- name: Wait for file to exist
+  wait_for:
+    path: ~/.jenkins/secrets/initialAdminPassword
+    state: present
+    timeout: 300
+
+- name: Get Jenkins inital password
+  command: cat ~/.jenkins/secrets/initialAdminPassword
+  register: initalAdmin_result
+  changed_when: false
+  when:
+    - initalAdmin is undefined
+    - configure_jenkins
+    - startJenkins_result is defined
+
+- name: Define initalAdmin variable
+  set_fact:
+    initalAdmin: "{{ initalAdmin_result.stdout }}"
+  when:
+    - initalAdmin is undefined
+    - configure_jenkins
+
+- name: Get crumbs and session info for API calls
+  uri:
+    url: http://localhost:8080/crumbIssuer/api/json
+    method: GET
+    user: "admin"
+    password: "{{ initalAdmin_result.stdout }}"
+    force_basic_auth: true
+    status_code: 200
+    return_content: true
+  register: jenk_crumb
+  when:
+    - configure_jenkins
+
+- name: Creating a file with content
+  copy:
+    dest: "~/.jenkins-cli.yaml"
+    content: |
+      current: localServer
+      jenkins_servers:
+      - name: localServer
+        url: http://localhost:8080/jenkins
+        username: admin
+        token: "{{ jenk_token.json.data.tokenValue }}"
+        insecureSkipVerify: true
+      mirrors:
+      - name: default
+        url: http://mirrors.jenkins.io/
+  when:
+    - initalAdmin is defined
+    - configure_jenkins
+
+- name: Wait for config file to exist
+  wait_for:
+    path: ~/.jenkins-cli.yaml
+    state: present
+    timeout: 300
+
+- name: install Plugins
+  command: "jcli plugin install {{ item.name }}"
+  loop: "{{ jenkins_plugins }}"
+  args:
+    creates: "~/.jenkins/plugins/{{ item.name }}.jpi"
+
+- name: Wait for install to finish
+  command: "jcli center watch --util-install-complete"
+  changed_when:
+    - '"Error:" in result.stderr'
+
+- name: restart
+  command: "jcli restart -b"
+  changed_when:
+    - '"Error:" in result.stderr'
+
+- name: Pause play until a jenkins is reachable on localhost
+  uri:
+    url: "http://localhost:8080"
+    follow_redirects: none
+    method: GET
+  register: _result
+  until: _result.status == 200
+  retries: 100
+  delay: 10
+
+- name: Check on update status
+  command: "jcli center watch --util-install-complete"
+  changed_when:
+    - '"Error:" in result.stderr'
