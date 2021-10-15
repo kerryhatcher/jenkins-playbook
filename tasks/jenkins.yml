@@ -98,6 +98,23 @@
     state: present
     timeout: 300
 
+- name: Pause play until a jenkins is reachable on localhost
+  uri:
+    url: "http://localhost:8080"
+    follow_redirects: none
+    method: GET
+    force_basic_auth: true
+    user: "admin"
+    password: "{{ initalAdmin_result.stdout }}"
+    status_code: 200
+    headers:
+      Cookie: "{{ jenk_crumb.cookies_string }}"
+      Jenkins-Crumb: "{{ jenk_crumb.json.crumb }}"
+  register: wait_result_1
+  until: wait_result_1.status == 200
+  retries: 20
+  delay: 10
+
 - name: install Plugins
   command: "jcli plugin install {{ item.name }}"
   loop: "{{ jenkins_plugins }}"
@@ -130,7 +147,7 @@
       Jenkins-Crumb: "{{ jenk_crumb.json.crumb }}"
   register: wait_result_1
   until: wait_result_1.status == 200
-  retries: 100
+  retries: 20
   delay: 10
 
 - name: Check on update status
