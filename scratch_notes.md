@@ -2,23 +2,7 @@ Old token stuff:
 
 
 ```
-- name: Get user API token
-  uri:
-    url: http://localhost:8080/me/descriptorByName/jenkins.security.ApiTokenProperty/generateNewToken
-    method: POST
-    return_content: yes
-    user: "admin"
-    password: "{{ initalAdmin_result.stdout }}"
-    force_basic_auth: yes
-    status_code: 200
-    headers:
-      Cookie: "{{ jenk_crumb.cookies_string }}"
-    body_format: form-urlencoded
-    body:
-    - [ newTokenName, bootstrap ]
-  register: jenk_token
-  when:
-    - configure_jenkins
+
 
 - name: Parse Token
   command: "jcli plugin install {{ jenk_token.name }}"

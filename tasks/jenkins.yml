@@ -39,6 +39,30 @@
   register: jenk_crumb
   when:
     - configure_jenkins
+  until: _result.status == 200
+  retries: 50
+  delay: 10
+
+- name: Get user API token
+  uri:
+    url: http://localhost:8080/me/descriptorByName/jenkins.security.ApiTokenProperty/generateNewToken
+    method: POST
+    return_content: true
+    user: "admin"
+    password: "{{ initalAdmin_result.stdout }}"
+    force_basic_auth: true
+    status_code: 200
+    headers:
+      Cookie: "{{ jenk_crumb.cookies_string }}"
+    body_format: form-urlencoded
+    body:
+      - [newTokenName, bootstrap]
+  register: jenk_token
+  when:
+    - configure_jenkins
+  until: _result.status == 200
+  retries: 50
+  delay: 10
 
 - name: Creating a file with content
   copy:
