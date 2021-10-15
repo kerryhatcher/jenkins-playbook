@@ -93,7 +93,7 @@ if ask "Run playbook?"; then
 
     source venv/bin/activate
 
-    sudo pip3 install --upgrade pip
+    pip3 install --upgrade pip
 
     pip3 install -r requirements.txt
 
