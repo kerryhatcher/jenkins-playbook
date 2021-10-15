@@ -96,7 +96,6 @@ jobs:
           ANSIBLE_FORCE_COLOR: '1'
 
       - name: 'Sending SMS Success Notification'
-        if: ${{ failure() }}
         uses: twilio-labs/actions-sms@d1488bc77f2cc44182fb444073326ccc715103b0
         with:
           fromPhoneNumber: ${{ secrets.TWILIO_FROM_PHONE }}
