@@ -95,7 +95,19 @@ jobs:
         env:
           ANSIBLE_FORCE_COLOR: '1'
 
-      - name: 'Sending SMS Notification'
+      - name: 'Sending SMS Success Notification'
+        if: ${{ failure() }}
+        uses: twilio-labs/actions-sms@d1488bc77f2cc44182fb444073326ccc715103b0
+        with:
+          fromPhoneNumber: ${{ secrets.TWILIO_FROM_PHONE }}
+          toPhoneNumber: ${{ secrets.TWILIO_TO_PHONE }}
+          message: 'jenkins-playbook passed!!!!!'
+        env:
+          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          TWILIO_API_KEY: ${{ secrets.TWILIO_API_KEY }}
+          TWILIO_API_SECRET: ${{ secrets.TWILIO_API_SECRET }}
+
+      - name: 'Sending SMS Failure Notification'
         if: ${{ failure() }}
         uses: twilio-labs/actions-sms@d1488bc77f2cc44182fb444073326ccc715103b0
         with:
