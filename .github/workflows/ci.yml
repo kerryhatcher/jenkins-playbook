@@ -93,11 +93,6 @@ jobs:
         env:
           ANSIBLE_FORCE_COLOR: '1'
 
-      - name: Test App | Plugins
-        run: |
-          jcli plugin install saml
-          jcli center watch --util-install-complete
-
       - name: Idempotence check.
         run: |
           idempotence=$(mktemp)
