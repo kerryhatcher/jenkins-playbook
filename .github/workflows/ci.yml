@@ -49,6 +49,17 @@ jobs:
       - name: Check out the codebase.
         uses: actions/checkout@v2
 
+      - name: 'Sending SMS Start Notification'
+        uses: twilio-labs/actions-sms@d1488bc77f2cc44182fb444073326ccc715103b0
+        with:
+          fromPhoneNumber: ${{ secrets.TWILIO_FROM_PHONE }}
+          toPhoneNumber: ${{ secrets.TWILIO_TO_PHONE }}
+          message: 'jenkins-playbook ${{ github.run_id }} started!!!!!'
+        env:
+          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          TWILIO_API_KEY: ${{ secrets.TWILIO_API_KEY }}
+          TWILIO_API_SECRET: ${{ secrets.TWILIO_API_SECRET }}
+
       - name: Uninstall GitHub Actions' built-in Homebrew.
         run: tests/uninstall-homebrew.sh
 
@@ -100,7 +111,7 @@ jobs:
         with:
           fromPhoneNumber: ${{ secrets.TWILIO_FROM_PHONE }}
           toPhoneNumber: ${{ secrets.TWILIO_TO_PHONE }}
-          message: 'jenkins-playbook passed!!!!!'
+          message: 'jenkins-playbook ${{ github.run_id }} passed!!!!!'
         env:
           TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
           TWILIO_API_KEY: ${{ secrets.TWILIO_API_KEY }}
@@ -112,7 +123,7 @@ jobs:
         with:
           fromPhoneNumber: ${{ secrets.TWILIO_FROM_PHONE }}
           toPhoneNumber: ${{ secrets.TWILIO_TO_PHONE }}
-          message: 'jenkins-playbook failed'
+          message: 'jenkins-playbook ${{ github.run_id }} failed'
         env:
           TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
           TWILIO_API_KEY: ${{ secrets.TWILIO_API_KEY }}

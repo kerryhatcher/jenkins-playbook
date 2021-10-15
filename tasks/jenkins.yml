@@ -60,7 +60,7 @@
   register: jenk_token
   when:
     - configure_jenkins
-  until: result.status == 200
+  until: jenk_token.status == 200
   retries: 50
   delay: 10
 
