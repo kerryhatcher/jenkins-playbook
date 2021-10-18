@@ -14,7 +14,9 @@ Closely based on https://github.com/geerlingguy/mac-dev-playbook
 
 ```
 
-curl -L https://raw.githubusercontent.com/kerryhatcher/jenkins-playbook/main/init.sh | bash
+eval "$(curl -L https://raw.githubusercontent.com/kerryhatcher/jenkins-playbook/main/init.sh)"
+
+curl  | bash
 curl -L https://raw.githubusercontent.com/kerryhatcher/jenkins-playbook/main/setup_jenkins.sh | bash
 ```
 

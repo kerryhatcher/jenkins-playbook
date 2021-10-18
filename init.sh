@@ -67,8 +67,47 @@ else
 
 fi
 
+if ask "Setup Python?"; then
+    echo "Yes"
+    
+    #curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+
+    #python3 get-pip.py --user
+
+    cd
+
+    #rm -rf jenkins-playbook
+
+    if [ -d "~/jenkins-playbook" ] 
+    then
+        echo "jenkins-playbook" 
+        cd ~/jenkins-playbook
+        git pull
+    else
+        echo git clone https://github.com/kerryhatcher/jenkins-playbook.git ~/jenkins-playbook
+        cd ~/jenkins-playbook
+    fi
+
+    #export PATH="$HOME/Library/Python/3.8/bin:/opt/homebrew/bin:$PATH"
+
+    make setup
+
+    . venv/bin/activate
+
+    pip3 install --upgrade pip
+
+    pip3 install -r requirements.txt
+
+    ansible-galaxy install -r requirements.yml
+
+   
 
 
+
+else
+    echo "No"
+
+fi
 
 
 
@@ -83,21 +122,21 @@ if ask "Run playbook?"; then
 
     #rm -rf jenkins-playbook
 
-    if [ -d "jenkins-playbook" ] 
+    if [ -d "~/jenkins-playbook" ] 
     then
         echo "jenkins-playbook" 
-        cd jenkins-playbook
+        cd ~/jenkins-playbook
         git pull
     else
-        echo git clone https://github.com/kerryhatcher/jenkins-playbook.git
-        cd jenkins-playbook
+        echo git clone https://github.com/kerryhatcher/jenkins-playbook.git ~/jenkins-playbook
+        cd ~/jenkins-playbook
     fi
 
-    export PATH="$HOME/Library/Python/3.8/bin:/opt/homebrew/bin:$PATH"
+    #export PATH="$HOME/Library/Python/3.8/bin:/opt/homebrew/bin:$PATH"
 
     make setup
 
-    source venv/bin/activate
+    . venv/bin/activate
 
     pip3 install --upgrade pip
 
@@ -107,7 +146,7 @@ if ask "Run playbook?"; then
 
    
 
-    if [[ -z "${ansible_become_password}" ]]; then
+    if [[ -z $ansible_become_password ]]; then
         ansible-playbook main.yml
     else
         ansible-playbook main.yml --ask-become-pass
