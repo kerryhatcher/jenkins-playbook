@@ -128,14 +128,14 @@ fi
 
 if ask "Run playbook?"; then
     echo "Yes"
+
+    export PATH="$HOME/Library/Python/3.8/bin:/opt/homebrew/bin:$PATH"
     
-    #curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+    curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 
-    #python3 get-pip.py --user
+    python3 get-pip.py --user
 
-    cd
-
-    #rm -rf jenkins-playbook
+    python3 -m pip install --upgrade pip
 
     if [ -d "~/jenkins-playbook" ] 
     then
@@ -148,8 +148,9 @@ if ask "Run playbook?"; then
         cd ~/jenkins-playbook
     fi
 
-    #export PATH="$HOME/Library/Python/3.8/bin:/opt/homebrew/bin:$PATH"
-
+    
+    cd ~/jenkins-playbook
+    
     make setup
 
     . venv/bin/activate
