@@ -139,6 +139,8 @@
     - '"Error:" in cli_result_2.stderr'
 
 - name: GET JCasC file
+  vars:
+    ansible_python_interpreter: ~/jenkins-playbook/venv/bin/python3
   amazon.aws.aws_s3:
     bucket: "{{ jenkins_jcasc_s3_bucket }}"
     object: prod/jenkins.yaml
