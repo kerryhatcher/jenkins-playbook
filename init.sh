@@ -45,7 +45,8 @@ ask() {
 
 if ask "Disable sudo password?"; then
     echo "Yes"
-    sudo echo "$(whoami)            ALL = (ALL) NOPASSWD: ALL" > /private/etc/sudoers.d/jenkins
+    echo "$(whoami) ALL = (ALL) NOPASSWD: ALL" | sudo EDITOR='tee -a' visudo
+    #sudo echo "$(whoami) ALL = (ALL) NOPASSWD: ALL" > /private/etc/sudoers.d/jenkins
 else
     echo "No"
 
