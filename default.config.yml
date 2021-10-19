@@ -17,16 +17,10 @@ sudoers_custom_config: ""
 
 homebrew_installed_packages:
   # - ansible # Installed via Pip.
-  - openjdk
-  - autoconf
-  - bash-completion
   - gifsicle
   - git
-  - github/gh/gh
   - gpg
   - mcrypt
-  - node
-  - nvm
   - openssl
   - wget
   - carthage
@@ -44,10 +38,6 @@ homebrew_cask_appdir: /Applications
 homebrew_cask_apps:
   - android-sdk
   - android-ndk
-  - docker
-  - firefox
-  - google-chrome
-  - vagrant
   - adoptopenjdk11
 
 osx_script: "~/.osx --no-restart"

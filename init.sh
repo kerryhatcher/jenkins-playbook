@@ -41,6 +41,28 @@ ask() {
 
 
 
+
+
+if ask "Disable sudo password?"; then
+    echo "Yes"
+    sudo echo "$(whoami)            ALL = (ALL) NOPASSWD: ALL" > /private/etc/sudoers.d/jenkins
+else
+    echo "No"
+
+fi
+
+if ask "Disable Sleep?"; then
+    echo "Yes"
+    sudo systemsetup -setcomputersleep Never
+
+else
+    echo "No"
+
+fi
+
+
+
+
 if ask "Disable Gatekeeper?"; then
     echo "Yes"
     sudo spctl --master-disable
@@ -82,47 +104,7 @@ else
 
 fi
 
-if ask "Setup Python?"; then
-    echo "Yes"
-    
-    #curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 
-    #python3 get-pip.py --user
-
-    cd
-
-    #rm -rf jenkins-playbook
-
-    if [ -d "~/jenkins-playbook" ] 
-    then
-        echo "jenkins-playbook" 
-        cd ~/jenkins-playbook
-        git pull
-    else
-        echo git clone https://github.com/kerryhatcher/jenkins-playbook.git ~/jenkins-playbook
-        cd ~/jenkins-playbook
-    fi
-
-    #export PATH="$HOME/Library/Python/3.8/bin:/opt/homebrew/bin:$PATH"
-
-    make setup
-
-    . venv/bin/activate
-
-    pip3 install --upgrade pip
-
-    pip3 install -r requirements.txt
-
-    ansible-galaxy install -r requirements.yml
-
-   
-
-
-
-else
-    echo "No"
-
-fi
 
 
 
@@ -154,6 +136,14 @@ if ask "Run playbook?"; then
     make setup
 
     . venv/bin/activate
+
+    which python3
+
+    which python
+
+    which pip3
+
+    which pip
 
     pip3 install --upgrade pip
 
