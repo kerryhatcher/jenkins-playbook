@@ -135,7 +135,7 @@ if ask "Run playbook?"; then
     
     cd ~/jenkins-playbook
     
-    make setup
+    python3 -m venv venv
 
     . ~/jenkins-playbook/venv/bin/activate
 
