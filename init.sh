@@ -91,9 +91,9 @@ if ask "Install xcode?"; then
     #         sed -e 's/^ *//' |
     #         tr -d '\n')
     #     softwareupdate -i "$PROD" -v;
-    else
-        echo "Xcode CLI tools OK"
-    fi
+    #else
+    #    echo "Xcode CLI tools OK"
+    #fi
 
     if ask "Xcode finshed installing?"; then
         echo "Yes"
