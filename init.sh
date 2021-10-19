@@ -121,7 +121,7 @@ if ask "Run playbook?"; then
 
     python3 -m pip install --upgrade pip
 
-    if [ -d "~/jenkins-playbook" ] 
+    if [ -d jenkins-playbook ] 
     then
         echo "jenkins-playbook found, updating" 
         cd ~/jenkins-playbook
@@ -137,7 +137,7 @@ if ask "Run playbook?"; then
     
     make setup
 
-    . venv/bin/activate
+    . ~/jenkins-playbook/venv/bin/activate
 
     which python3
 
